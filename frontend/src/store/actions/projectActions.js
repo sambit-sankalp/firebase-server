@@ -6,14 +6,17 @@ import {
 
 export const createProject =
   (project) =>
-  async (dispatch, getState, { getFirebase, getFirestore }) => {
+  async (dispatch, getState, { getFirestore }) => {
     try {
       dispatch({ type: CREATE_PROJECT_REQUEST });
 
       const firestore = getFirestore();
+      const profile = getState().firebase.profile
+      const id = getState().auth.uid
       await firestore.collection("projects").add({
         ...project,
-        authorId: 12345,
+        authorName: profile.name,
+        authorId: id,
       });
 
       dispatch({
