@@ -1,16 +1,28 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { getFirestore, reduxFirestore, firestoreReducer } from "redux-firestore";
-import { getFirebase, reactReduxFirebase } from "react-redux-firebase";
-import firebase from "../config/firebase";
+import {
+  getFirestore,
+  reduxFirestore,
+  firestoreReducer,
+} from "redux-firestore";
+import {
+  getFirebase,
+  reactReduxFirebase,
+  firebaseReducer,
+} from "react-redux-firebase";
+import firebaseConfig from "../config/firebase";
 
 //Reducers
-import { projectCreateReducer } from "./reducers/projectReducers"
+import { projectCreateReducer } from "./reducers/projectReducers";
+import { signInReducer, signOutReducer } from "./reducers/authReducers";
 
 const reducer = combineReducers({
+  signInUser: signInReducer,
+  signOutUser: signOutReducer,
   projectCreate: projectCreateReducer,
-  firestore: firestoreReducer
+  firestore: firestoreReducer,
+  firebase: firebaseReducer,
 });
 
 const initialState = {};
@@ -22,8 +34,8 @@ const store = createStore(
   initialState,
   compose(
     composeWithDevTools(applyMiddleware(...middleware)),
-    reduxFirestore(firebase),
-    reactReduxFirebase(firebase)
+    reduxFirestore(firebaseConfig),
+    reactReduxFirebase(firebaseConfig,{useFirestoreForProfile: true, userProfile: 'users'})
   )
 );
 
