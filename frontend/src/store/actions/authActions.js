@@ -12,10 +12,10 @@ import {
 
 export const signin =
   (credentials) =>
-  async (dispatch, { getFirebase }) => {
+  async (dispatch, { useFirebase }) => {
     try {
       dispatch({ type: LOGIN_REQUEST });
-      const firebase = getFirebase();
+      const firebase = useFirebase();
 
       await firebase
         .auth()
@@ -35,10 +35,10 @@ export const signin =
 
 export const signout =
   () =>
-  async (dispatch, { getFirebase }) => {
+  async (dispatch, { useFirebase }) => {
     try {
       dispatch({ type: LOGOUT_REQUEST });
-      const firebase = getFirebase();
+      const firebase = useFirebase();
 
       await firebase.auth().signOut();
 
@@ -56,10 +56,10 @@ export const signout =
 
 export const signUp =
   (newuser) =>
-  async (dispatch, { getFirebase, getFirestore }) => {
+  async (dispatch, { useFirebase, getFirestore }) => {
     try {
       dispatch({ type: SIGNUP_REQUEST });
-      const firebase = getFirebase();
+      const firebase = useFirebase();
       const firestore = getFirestore();
 
       await firebase

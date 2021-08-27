@@ -54,8 +54,6 @@ const AddProject = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
-
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
