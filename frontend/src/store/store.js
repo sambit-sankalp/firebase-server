@@ -17,7 +17,7 @@ import {
 import firebaseConfig from "../config/firebase";
 
 //Reducers
-import { projectCreateReducer } from "./reducers/projectReducers";
+import { allProjectsReducer, projectCreateReducer } from "./reducers/projectReducers";
 import {
   signInReducer,
   signOutReducer,
@@ -29,6 +29,7 @@ const reducer = combineReducers({
   signOutUser: signOutReducer,
   signUpUser: signUpReducer,
   projectCreate: projectCreateReducer,
+  projectList: allProjectsReducer,
   firestore: firestoreReducer,
   firebase: firebaseReducer,
 });

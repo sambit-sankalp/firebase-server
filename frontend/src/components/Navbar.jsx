@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { signOut } from "../store/actions/authActions";
+import { signout } from "../store/actions/authActions";
 
 const NavbarComponents = () => {
   const signOutUser = useSelector((state) => state.signOutUser);
@@ -10,7 +10,7 @@ const NavbarComponents = () => {
   const dispatch = useDispatch();
 
   const signOut = () => {
-    dispatch(signOut());
+    dispatch(signout());
   };
 
   return (
