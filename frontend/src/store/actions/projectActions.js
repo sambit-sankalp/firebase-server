@@ -3,20 +3,22 @@ import {
   CREATE_PROJECT_REQUEST,
   CREATE_PROJECT_SUCCESS,
 } from "../constants/projectConstants";
+import { firestore } from "../../config/firebase";
 
 export const createProject =
   (project) =>
-  async (dispatch, getState, { getFirestore }) => {
+  async (dispatch, getState) => {
     try {
       dispatch({ type: CREATE_PROJECT_REQUEST });
 
-      const firestore = getFirestore();
-      const profile = getState().firebase.profile
-      const id = getState().auth.uid
+      console.log(getState());
+      const name = getState().firebase.profile.name;
+      const id = getState().firebase.auth.uid;
+
       await firestore.collection("projects").add({
         ...project,
-        authorName: profile.name,
-        authorId: id,
+        Authorname: name,
+        Authorid: id,
       });
 
       dispatch({
