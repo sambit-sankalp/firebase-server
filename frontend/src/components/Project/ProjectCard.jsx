@@ -15,7 +15,8 @@ const useStyles = makeStyles({
   },
 });
 
-const ProjectCard = ({project}) => {
+const ProjectCard = () => {
+  console.log("project");
   const classes = useStyles();
   return (
     <div>
@@ -23,10 +24,10 @@ const ProjectCard = ({project}) => {
         <CardActionArea>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {project.title}
+              Title
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {project.desc}
+              Description
             </Typography>
           </CardContent>
         </CardActionArea>
