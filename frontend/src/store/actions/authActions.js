@@ -9,40 +9,37 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_REQUEST,
 } from "../constants/authConstants";
+import { auth, firestore } from "../../config/firebase";
 
-export const signin =
-  (credentials) =>
-  async (dispatch, { useFirebase }) => {
-    try {
-      dispatch({ type: LOGIN_REQUEST });
-      const firebase = useFirebase();
+export const signin = (credentials) => async (dispatch) => {
+  try {
+    dispatch({ type: LOGIN_REQUEST });
 
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(credentials.email, credentials.password);
-
-      dispatch({ type: LOGIN_SUCCESS });
-    } catch (error) {
-      dispatch({
-        type: LOGIN_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+    await auth
+      .signInWithEmailAndPassword(credentials.email, credentials.password)
+      .then((userCredentials) => {
+        dispatch({ type: LOGIN_SUCCESS });
       });
-    }
-  };
+  } catch (error) {
+    dispatch({
+      type: LOGIN_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 export const signout =
   () =>
-  async (dispatch, { useFirebase }) => {
+  async (dispatch) => {
     try {
       dispatch({ type: LOGOUT_REQUEST });
-      const firebase = useFirebase();
 
-      await firebase.auth().signOut();
-
-      dispatch({ type: LOGOUT_SUCCESS });
+      await auth.signOut().then(() => {
+        dispatch({ type: LOGOUT_SUCCESS });
+      });
     } catch (error) {
       dispatch({
         type: LOGOUT_FAIL,
@@ -56,22 +53,24 @@ export const signout =
 
 export const signUp =
   (newuser) =>
-  async (dispatch, { useFirebase, getFirestore }) => {
+  async (dispatch) => {
     try {
       dispatch({ type: SIGNUP_REQUEST });
-      const firebase = useFirebase();
-      const firestore = getFirestore();
 
-      await firebase
-        .auth()
+      await auth
         .createUserWithEmailAndPassword(newuser.email, newuser.password)
-        .then((res) => {
-          return firestore.collection("users").doc(res.user.uid).set({
-            name: newuser.name,
-          });
-        });
+        .then((userCredentials) => {
+          dispatch({ type: SIGNUP_SUCCESS });
+          const user = userCredentials.user;
 
-      dispatch({ type: SIGNUP_SUCCESS });
+          return firestore.collection("users").doc(user.uid).set(
+            {
+              name: newuser.name,
+              email: newuser.email,
+            },
+            { merge: true }
+          );
+        });
     } catch (error) {
       dispatch({
         type: SIGNUP_FAIL,

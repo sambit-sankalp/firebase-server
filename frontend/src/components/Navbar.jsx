@@ -1,8 +1,18 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { signOut } from "../store/actions/authActions";
 
 const NavbarComponents = () => {
+  const signOutUser = useSelector((state) => state.signOutUser);
+  const { loading, success, error } = signOutUser;
+  const dispatch = useDispatch();
+
+  const signOut = () => {
+    dispatch(signOut());
+  };
+
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -21,17 +31,13 @@ const NavbarComponents = () => {
               <NavDropdown title="User" id="collasible-nav-dropdown">
                 <NavDropdown.Item>Name</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item>Log Out</NavDropdown.Item>
+                <NavDropdown.Item onClick={signOut}>Log Out</NavDropdown.Item>
               </NavDropdown>
               <Link to="/signin">
-                <Nav.Link eventKey={2}>
-                  SignIn
-                </Nav.Link>
+                <Nav.Link eventKey={2}>SignIn</Nav.Link>
               </Link>
               <Link to="/signup">
-                <Nav.Link eventKey={2}>
-                  Register
-                </Nav.Link>
+                <Nav.Link eventKey={2}>Register</Nav.Link>
               </Link>
             </Nav>
           </Navbar.Collapse>
