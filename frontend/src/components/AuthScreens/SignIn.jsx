@@ -67,7 +67,7 @@ const SignIn = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(signin({ email: values.email, password: values.password }));
+    dispatch(signin());
   };
 
   return (

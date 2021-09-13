@@ -9,17 +9,25 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_REQUEST,
 } from "../constants/authConstants";
-import { auth, firestore } from "../../config/firebase";
+import { auth, firestore, provider } from "../../config/firebase";
 
-export const signin = (credentials) => async (dispatch) => {
+export const signin = () => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
 
-    await auth
-      .signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then((userCredentials) => {
-        dispatch({ type: LOGIN_SUCCESS });
-      });
+    // await auth
+    //   .signInWithEmailAndPassword(credentials.email, credentials.password)
+    //   .then((userCredentials) => {
+    //     dispatch({ type: LOGIN_SUCCESS });
+    //   });
+
+    await auth.signInWithPopup(provider).then((result) => {
+      var credential = result.credential;
+      var token = credential.accessToken;
+      var user = result.user;
+      console.log(user);
+    })
+
   } catch (error) {
     dispatch({
       type: LOGIN_FAIL,
